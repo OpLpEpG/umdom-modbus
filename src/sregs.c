@@ -19,10 +19,10 @@
 */
 
 #include <stdlib.h>
-#include <lightmodbus/lightmodbus.h>
-#include <lightmodbus/parser.h>
-#include <lightmodbus/slave.h>
-#include <lightmodbus/slave/sregs.h>
+#include <lightmodbus.h>
+#include <parser.h>
+#include <slave.h>
+#include <sregs.h>
 
 #if defined(LIGHTMODBUS_F03S) || defined(LIGHTMODBUS_F04S)
 ModbusError modbusParseRequest0304( ModbusSlave *status, ModbusParser *parser )

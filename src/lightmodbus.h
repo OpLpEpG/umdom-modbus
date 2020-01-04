@@ -203,7 +203,7 @@ extern uint8_t modbusMaskWrite( uint8_t *mask, uint16_t maskLength, uint16_t bit
 extern uint16_t modbusCRC( const uint8_t *data, uint16_t length );
 
 //For user convenience
-#include "master.h"
+//#include "master.h"
 #include "slave.h"
 
 // For C++ (closes `extern "C"` )

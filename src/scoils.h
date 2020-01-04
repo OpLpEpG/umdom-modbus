@@ -27,9 +27,9 @@
 #define LIGHTMODBUS_SCOILS_H
 
 #include <inttypes.h>
-#include "../libconf.h"
-#include "../lightmodbus.h"
-#include "../slave.h"
+#include "libconf.h"
+#include "lightmodbus.h"
+#include "slave.h"
 
 //Functions for parsing requests
 #if defined(LIGHTMODBUS_F01S) || defined(LIGHTMODBUS_F02S)

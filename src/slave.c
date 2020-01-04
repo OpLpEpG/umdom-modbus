@@ -20,11 +20,11 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <lightmodbus/lightmodbus.h>
-#include <lightmodbus/slave.h>
-#include <lightmodbus/parser.h>
-#include <lightmodbus/slave/sregs.h>
-#include <lightmodbus/slave/scoils.h>
+#include <lightmodbus.h>
+#include <slave.h>
+#include <parser.h>
+#include <sregs.h>
+#include <scoils.h>
 
 #ifdef LIGHTMODBUS_SLAVE_BASE
 ModbusError modbusBuildException( ModbusSlave *status, uint8_t function, ModbusExceptionCode code )

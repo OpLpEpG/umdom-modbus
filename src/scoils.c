@@ -20,10 +20,10 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <lightmodbus/lightmodbus.h>
-#include <lightmodbus/parser.h>
-#include <lightmodbus/slave.h>
-#include <lightmodbus/slave/scoils.h>
+#include <lightmodbus.h>
+#include <parser.h>
+#include <slave.h>
+#include <scoils.h>
 
 #if defined(LIGHTMODBUS_F01S) || defined(LIGHTMODBUS_F02S)
 ModbusError modbusParseRequest0102( ModbusSlave *status, ModbusParser *parser )

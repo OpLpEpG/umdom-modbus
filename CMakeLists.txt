@@ -18,6 +18,8 @@ if(CONFIG_USE_MODBUS)
 #https://babblesim.github.io/folder_structure_and_env.html")
 #endif()
 
+message("UMDOM: modul MODBUS Запуск сборки.")
+
   zephyr_include_directories(
     src/
   )
