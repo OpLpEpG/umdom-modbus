@@ -1,3 +1,4 @@
 # umdom-modbus
 лайт модбас для зефира
-used 
+
+`used` https://github.com/Jacajack/liblightmodbus
