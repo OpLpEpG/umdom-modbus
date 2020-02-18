@@ -1,0 +1,15 @@
+#menu "modbus slave"
+
+choice USE_MODBUS
+	bool "modbus"
+	optional
+
+config OPT_BOOL_CHOICE_SYM_1
+	bool "Optional bool choice sym 1"
+
+config OPT_BOOL_CHOICE_SYM_2
+	bool "Optional bool choice sym 2"
+
+endchoice
+
+#endmenu
