@@ -1,15 +1,150 @@
-#menu "modbus slave"
 
-choice USE_MODBUS
-	bool "modbus"
-	optional
+config LIGHTMODBUS_SLAVE_BASE
+	bool "light modbus slave"
+	help
+	umdom-modbus
+	лайт модбас для зефира
+	на основе библиотеки https://github.com/Jacajack/liblightmodbus
 
-config OPT_BOOL_CHOICE_SYM_1
-	bool "Optional bool choice sym 1"
+if LIGHTMODBUS_SLAVE_BASE
 
-config OPT_BOOL_CHOICE_SYM_2
-	bool "Optional bool choice sym 2"
+config LIGHTMODBUS_LITTLE_ENDIAN
+	bool "little endian"
+	default y
+	
+menu "supports functions"
+config LIGHTMODBUS_F01S
+	bool "1 (0x01) — чтение значений из нескольких регистров флагов (Read Coil Status)."
+	default y
+	help
+	Запрос состоит из адреса первого элемента таблицы, значение которого требуется прочитать, 
+	и количества считываемых элементов. Адрес и количество данных задаются 16-битными числами, 
+	старший байт каждого из них передается первым.
 
-endchoice
+	В ответе передаются запрошенные данные. Количество байт данных зависит от количества запрошенных элементов. 
+	Перед данными передается один байт, значение которого равно количеству байт данных.
 
-#endmenu
+	Значения флагов и дискретных входов передаются в упакованном виде: по одному биту на флаг. 
+	Единица означает включённое состояние, ноль — выключенное. Значения запрошенных флагов заполняют 
+	сначала первый байт, начиная с младшего бита, затем следующие байты, также от младшего бита к старшим. 
+	Младший бит первого байта данных содержит значение флага, указанного в поле «адрес». 
+	Если запрошено количество флагов, не кратное восьми, то значения лишних битов заполняются нулями:	
+config LIGHTMODBUS_F02S
+	bool "2 (0x02) — чтение значений из нескольких дискретных входов (Read Discrete Inputs)."
+	default y
+	help
+	Запрос состоит из адреса первого элемента таблицы, значение которого требуется прочитать, 
+	и количества считываемых элементов. Адрес и количество данных задаются 16-битными числами, 
+	старший байт каждого из них передается первым.
+
+	В ответе передаются запрошенные данные. Количество байт данных зависит от количества запрошенных элементов. 
+	Перед данными передается один байт, значение которого равно количеству байт данных.
+	Значения флагов и дискретных входов передаются в упакованном виде: по одному биту на флаг. 
+	Единица означает включённое состояние, ноль — выключенное. Значения запрошенных флагов заполняют 
+	сначала первый байт, начиная с младшего бита, затем следующие байты, также от младшего бита к старшим. 
+	Младший бит первого байта данных содержит значение флага, указанного в поле «адрес». 
+	Если запрошено количество флагов, не кратное восьми, то значения лишних битов заполняются нулями:	
+config LIGHTMODBUS_F03S
+	bool "3 (0x03) — чтение значений из нескольких регистров хранения (Read Holding Registers)."
+	default y
+	help
+	Запрос состоит из адреса первого элемента таблицы, значение которого требуется прочитать, 
+	и количества считываемых элементов. Адрес и количество данных задаются 16-битными числами, 
+	старший байт каждого из них передается первым.
+
+	В ответе передаются запрошенные данные. Количество байт данных зависит от количества запрошенных элементов. 
+	Перед данными передается один байт, значение которого равно количеству байт данных.
+
+	Значения регистров хранения и регистров ввода передаются начиная с указанного адреса, 
+	по два байта на регистр, старший байт каждого регистра передаётся первым:	
+config LIGHTMODBUS_F04S
+	bool "4 (0x04) — чтение значений из нескольких регистров ввода (Read Input Registers)."
+	default y
+	help
+	Запрос состоит из адреса первого элемента таблицы, значение которого требуется прочитать, 
+	и количества считываемых элементов. Адрес и количество данных задаются 16-битными числами, 
+	старший байт каждого из них передается первым.
+
+	В ответе передаются запрошенные данные. Количество байт данных зависит от количества запрошенных элементов. 
+	Перед данными передается один байт, значение которого равно количеству байт данных.
+
+	Значения регистров хранения и регистров ввода передаются начиная с указанного адреса, 
+	по два байта на регистр, старший байт каждого регистра передаётся первым:	
+config LIGHTMODBUS_F05S
+	bool "5 (0x05) — запись значения одного флага (Force Single Coil)."
+	default y
+	help
+	Команда состоит из адреса элемента (2 байта) и устанавливаемого значения (2 байта).
+
+	Для флагов значение 0xFF00 означает включённое состояние, 0x0000 — выключенное, другие значения недопустимы.
+
+	Если команда выполнена успешно, ведомое устройство возвращает копию запроса.		
+config LIGHTMODBUS_F06S
+	bool "6 (0x06) — запись значения в один регистр хранения (Preset Single Register)."
+	default y
+	help
+	Команда состоит из адреса элемента (2 байта) и устанавливаемого значения (2 байта).
+
+	Для регистра хранения значение является просто 16-битным словом.
+
+	Если команда выполнена успешно, ведомое устройство возвращает копию запроса.		
+config LIGHTMODBUS_F15S
+	bool "15 (0x0F) — запись значений в несколько регистров флагов (Force Multiple Coils)."
+	default y
+	help
+	Команда состоит из адреса элемента, количества изменяемых элементов, 
+	количества передаваемых байт устанавливаемых значений и самих устанавливаемых значений. 
+	Данные упаковываются так же, как в командах чтения данных.
+
+	Ответ состоит из начального адреса и количества изменённых элементов.	
+config LIGHTMODBUS_F16S
+	bool "16 (0x10) — запись значений в несколько регистров хранения (Preset Multiple Registers)."
+	default y
+	help
+	Команда состоит из адреса элемента, количества изменяемых элементов, 
+	количества передаваемых байт устанавливаемых значений и самих устанавливаемых значений. 
+	Данные упаковываются так же, как в командах чтения данных.
+
+	Ответ состоит из начального адреса и количества изменённых элементов.	
+config LIGHTMODBUS_F22S
+	bool "22 (0x16) — запись в один регистр хранения с использованием маски 'И' и маски 'ИЛИ' (Mask Write Register)."
+	help 
+	Команда состоит из адреса регистра и двух 16-битных чисел, которые используются как маски, 
+	с помощью которых можно индивидуально сбросить или установить отдельные биты в регистре.
+	Конечный результат определяется формулой:
+	Результат = (Текущее_значение AND Маска_И) OR (Маска_ИЛИ AND (NOT Маска_И))
+config LIGHTMODBUS_SLAVE_USER_FUNCTIONS
+	bool "User-defined Modbus functions"
+	help 
+	Liblightmodbus allows user to define his own request/response parsing functions.
+endmenu
+config LIGHTMODBUS_EXPERIMENTAL
+	bool "enable experimental features"
+if 	LIGHTMODBUS_EXPERIMENTAL
+config LIGHTMODBUS_REGISTER_CALLBACK
+	bool "callback function for registers"
+	help
+	Liblightmodbus allows user to define his own register/coil callback function used for fetching 
+	register values instead of the ModbusSlave::registers ModbusSlave::coils arrays. 
+	This feature can be helpful when implementing non-continuous register ranges 
+	that would otherwise mean huge waste of memory.
+config LIGHTMODBUS_COIL_CALLBACK
+	bool "callback function for coils"
+	help
+	Liblightmodbus allows user to define his own register/coil callback function used for fetching 
+	register values instead of the ModbusSlave::registers ModbusSlave::coils arrays. 
+	This feature can be helpful when implementing non-continuous register ranges 
+	that would otherwise mean huge waste of memory.
+endif
+config LIGHTMODBUS_STATIC_MEMORY
+	bool "enable ststic memory"
+	default y
+if 	LIGHTMODBUS_STATIC_MEMORY
+config LIGHTMODBUS_STATIC_MEM_SLAVE_REQUEST
+	int "ststic memory request buffer length"
+	default 256
+config LIGHTMODBUS_STATIC_MEM_SLAVE_RESPONSE
+	int "ststic memory response buffer length"
+	default 256
+endif
+endif
