@@ -1,4 +1,4 @@
-
+comment "slave modbus на основе библиотеки https://github.com/Jacajack/liblightmodbus"
 config LIGHTMODBUS_SLAVE_BASE
 	bool "light modbus slave"
 	help
