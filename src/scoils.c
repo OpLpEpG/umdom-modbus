@@ -177,8 +177,8 @@ ModbusError modbusParseRequest05( ModbusSlave *status, ModbusParser *parser )
 
 
 	//Check if reg is allowed to be written
-	#ifdef LIGHTMODBUS_COIL_CALLBACK
-		if ( status->registerCallback( MODBUS_REGQ_R_CHECK, MODBUS_COIL, index, 0, status->registerCallbackContext ) == 0 )
+	#ifdef LIGHTMODBUS_COIL_CALLBACK			//OLEG
+		if ( status->registerCallback( MODBUS_REGQ_W_CHECK, MODBUS_COIL, index, 0, status->registerCallbackContext ) == 0 )
 			return modbusBuildExceptionErr( status, 5, MODBUS_EXCEP_SLAVE_FAILURE, MODBUS_FERROR_NOWRITE );
 	#else
 		if ( modbusMaskRead( status->coilMask, status->coilMaskLength, index ) == 1 )
